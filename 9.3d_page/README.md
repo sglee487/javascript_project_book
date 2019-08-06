@@ -1,5 +1,6 @@
-![Alt text](Screenshot from 2019-08-06 18-38-54.png?raw=true "Title")
-Screenshot from 2019-08-06 18-38-54.png
+![Alt text](2019-08-06 18-38-54.png?raw=true "Title")
+
+2019-08-06 18-38-54.png
 
 Font-Awesome 클래스
 ---
