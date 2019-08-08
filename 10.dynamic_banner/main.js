@@ -1,10 +1,11 @@
-var banner = document.getElementById('banner'), // 배너 본체
-    img = banner.getElementsByTagName('img'),   // 풍선 스프라이트 이미지 객체
-    toggle = document.getElementById('toggle'),     // 배너를 열고 닫는 토글 버튼 객체
-    sound_btn = document.getElementById('sound_btn');   // 사운드를 끄고 켜는 토글 버튼 객체
+var $banner = $('#banner'), // 배너 본체
+    $img = $banner.find('img'), // 스프라이트 이미지
+    $toggle = $('#toggle'), // 배너 토글 버튼
+    $sound_btn = $('#sound_btn');   // 사운드 토클 버튼
 
-var banner_height = getComputedStyle(banner).height;    // 배너의 높이 값 변수
-var cast = [];  // 풍선 스프라이트 객체를 정의할 배열
+// 배너의 높이 값 변수
+var $banner_height = $banner.css('height');
+var cast = []; // 풍선 객체
 
 // 풍선 객체 생성 함수
 function set_balloon(num) {
@@ -27,38 +28,41 @@ function set_balloon(num) {
 
 // 풍선 객체 초기화 함수
 function ball_init() {
-    for(var i = 0; i < img.length; i++){
+    $img.each(function (i) {
+        // 풍선 객체들의 속성 초기화
         set_balloon(i);
-        img[i].style.left = '-9999px';  // 풍선의 x 좌표 . 초기화면에서 풍선이 화면 내에 표시되지 않도록 화면 밖 임의의 좌표 값 지정
-        img[i].style.top = '-9999px';   // 풍선의 y 좌표
-    }
+        $img.eq(i)
+            .css('left','-9999px')  // 풍선의 x 좌표
+            .css('top','-9999px');  // 풍선의 y 좌표
+    });
 }
 
 ball_init();
 
 // 풍선 애니메이션 함수
 function animate_balloon() {
-    for(var i = 0; i < img.length; i++){
+    $img.each(function (i) {
         // 풍선 속성 변경
-        img[i].style.left = cast[i].x + 'px';   // x 좌표
-        img[i].style.top = cast[i].y + 'px';    // y 좌표
-        img[i].style.transform = 'rotate(' + cast[i].angle + 'deg)';    // 회전
+        $img.eq(i)
+            .css('left', cast[i].x + 'px') // x 좌표
+            .css('top', cast[i].y + 'px') // y 좌표
+            .css('transform', 'rotate(' + cast[i].angle + 'deg)'); // 회전
 
         // 풍선이 화면 안에 있으면
-        if(cast[i].y < parseInt(banner_height)){
+        if (cast[i].y < parseInt($banner_height)) {
             cast[i].y += 1 + cast[i].speed;
             cast[i].angle += cast[i].speed;
         } else { // 풍선이 화면 밖으로 나가면
             set_balloon(i);
         }
-    } // end for
+    }); // end each()
 } // end move_ballon()
 
 function bgm_init() {
     var bgm = new Audio();
     bgm.src = 'images/bgm.mp3';
     bgm.loop = true;
-    document.body.appendChild(bgm);
+    $('body').append(bgm);  // 문서에 오디오 객체 추가
 }
 /* ----------------------------- */
 // 메인
@@ -76,8 +80,8 @@ bgm_init();
 /* --------------------------- */
 // 사운드 버튼 이벤트 핸들러
 sound_btn.onclick = function (event) { // 이벤트 버블링 방지를 위해 매개변수 추가
-    var attr = sound_btn.getAttribute('class'); // 사운드 버튼의 class 속성
-    var bgm = document.getElementsByTagName('audio');   // audio 객체
+    var attr = $(this).attr('class') // 사운드 버튼의 class 속성
+    var bgm = $('audio');   // audio 객체
 
     if(attr == 'active'){
         // 사운드 off
@@ -95,25 +99,25 @@ sound_btn.onclick = function (event) { // 이벤트 버블링 방지를 위해 �
 
 // 배너 열기/닫기 버튼 이벤트 핸들러
 toggle.onclick = function () {
-    var attr = banner.getAttribute('class') // 배너 객체 class 속성
+    var attr = $banner.attr('class'); // 배너 객체 class 속성
 
     if(attr == 'active'){
         // 배너 닫기
-        banner.removeAttribute('class');
-        toggle.innerHTML = '배너 열기'; // 버튼 text 변경
+        $banner.removeAttr('class');
+        $(this).html('배너 열기'); // 버튼 text 변경
         return false;
     } else {
         // 배너 열기
-        banner.setAttribute('class','active');
-        toggle.innerHTML = '배너 닫기';
+        $banner.attr('class','active');
+        $(this).html('배너 닫기');
         return false;
     }
 };
 
 // 배너 링크 처리
-banner.onclick = function () {
+$banner.click(function () {
     window.open('https://csslick.github.io','_black');  // 새 창 열기
     // _black 새창, _self 현재 창
     // window.open(url, option) 메서드
     // location.href = URL . 속성. 현재 페이지에서 지정된 URL로 이동
-}
+});
