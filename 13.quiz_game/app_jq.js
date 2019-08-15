@@ -60,7 +60,7 @@ function checkAnswer(i) {
     // 선택 버튼(.btn) 이벤트 리스너
     $('.btn').click(function () {
         var $answer = $(this).text();
-
+        console.log($answer);
         if(quiz.correctAnswer($answer)){
             alert('정답입니다!');
             quiz.score++;
@@ -76,9 +76,10 @@ function checkAnswer(i) {
 } // end checkAnswer
 
 // 4개의 버튼 이벤트 리스너 지정
-for(var i = 0; i < btn.length; i++){
-    checkAnswer(i);
-}
+// for(var i = 0; i < btn.length; i++){
+//     checkAnswer(i);
+// }
+checkAnswer(0);
 
 update_quiz();
 
